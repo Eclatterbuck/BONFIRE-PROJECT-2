@@ -4,10 +4,17 @@ const Author = require('../models/author')
 
 //USED TO GET ALL AUTHORS
 
-router.get('/', (req, res) => {
-    res.render('authors/index')
+router.get('/', async (req, res) => {
+  
+    const authors = await Author.find()
+    res.render('authors/index', {
+      authors: authors,
+      
+    })
+  
+    res.redirect('/')
+  }
 })
-
 
 // New Author Route
 router.get('/new', (req, res) => {
