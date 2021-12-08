@@ -1,0 +1,1 @@
+A website designed to teach the user details about different stars and constellations. 
