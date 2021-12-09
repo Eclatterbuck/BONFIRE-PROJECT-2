@@ -1,0 +1,51 @@
+<!-- To be shared between new file and edit file -->
+
+<!--to output book inforamtion & name-->
+
+
+<!--Implementing books divs were used to break up the lines. (Continue to Google fun new ways to do it)--> 
+<div class="form-row">
+    <div class="form-item">
+      <label>Title</label>
+      <input type="text" name="title" value="<%= book.title %>"> <!--used as value-->
+    </div>
+    <div class="form-item">
+      <label>Author</label>
+      <select name="author">
+        <% authors.forEach(author => { %>
+          <% if (author.id === book.author) { %> <!--below is a select option to create an option by default/ to render an author loop--> 
+            <option selected label="<%= author.name %>" value="<%= author.id %>"> <!--looped through all different authors and access author collection-->
+          <% } else { %>
+            <option label="<%= author.name %>" value="<%= author.id %>"> <!--what the user can see-->
+          <% } %> 
+        <% }) %>
+      </select>
+    </div>
+  </div>
+  
+  <div class="form-row">
+    <div class="form-item">
+      <label>Publish Date</label>
+      <input type="date" name="publishDate"
+            value="<%= book.publishDate == null ? '' : book.publishDate.toISOString().split('T')[0] %>"> <!--T variable was converted to string and t varaible converts to time varEssentially an if else statement-->
+    </div>
+
+    <!--Input for Page Count-->
+    <div class="form-item">
+      <label>Page Count</label>
+      <input type="number" name="pageCount" min="1" value="<%= book.pageCount %>"> <!--minimum set to 1 because you can never have a book less than 1-->
+    </div>
+  </div>
+  
+  <div class="form-row">
+    <div class="form-item form-item-no-grow">
+
+
+      <label>Cover</label>
+      <input type="file" name="cover" class="book-cover filepond"> <!---->
+    </div>
+    <div class="form-item">
+      <label>Description</label>
+      <textarea name="description"><%= book.description %></textarea> <!--Where text in text area will go-->
+    </div>
+  </div>

@@ -4,14 +4,22 @@ const Author = require('../models/author')
 
 //USED TO GET ALL AUTHORS
 
+//due to get we must query to access our parameters
+//allowing names to be passed to server
+//RegExp is Regular Expression and Search Options sends requests back to the user so we can get everything we want
+
 router.get('/', async (req, res) => {
-  
-    const authors = await Author.find()
+  let searchOptions = {}
+  if (req.query.name != null && req.query.name !== '') {
+    searchOptions.name = new RegExp(req.query.name, 'i')
+  }
+  try {
+    const authors = await Author.find(searchOptions)
     res.render('authors/index', {
       authors: authors,
-      
+      searchOptions: req.query
     })
-  
+  } catch {
     res.redirect('/')
   }
 })
