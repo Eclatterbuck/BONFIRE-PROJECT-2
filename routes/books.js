@@ -1,19 +1,13 @@
 const express = require('express')
 const router = express.Router()
-const multer = require('multer')
+
 const fs = require('fs') //file system
 const path = require('path')
 const Book = require('../models/book')
 const Author = require('../models/author')
-const uploadPath = path.join('public', Book.coverImagebasePath)
-const imageMimetypes = ['images/jpeg', 'images/png']
-const upload = multer({
-  dest: uploadPath
-  fileFilter: (req, file, callback) => {
-    callback(null, )
-  }  //Filters which file the server accepts.
 
-})
+const imageMimetypes = ['images/jpeg', 'images/png']
+
 
 // All Books Route
 router.get('/', async (req, res) => {
@@ -55,7 +49,7 @@ router.get('/new', async (req, res) => {
   //Creating new books
 
   // Create Book Route
-router.post('/', upload.single('cover'), async (req, res) => {
+router.post('/', async (req, res) => {
   req.file != null ? req.file.filename : null
   const book = new Book({
     title: req.body.title,
@@ -64,6 +58,7 @@ router.post('/', upload.single('cover'), async (req, res) => {
     pageCount: req.body.pageCount,
     description: req.body.description
 })
+saveCover(book, req.body.cover)
 
 try {
   const newBook = await book.save()
@@ -77,11 +72,7 @@ try {
 
 })
 
-function removebookCover(fileName) {
-  fs.unlink(path.join(uploadPath, fileName), err +> {
-    if (err) console.error(err)
-  })
-}
+
 
  async function renderNewpage(res, book, errorMessage = false) { //rendering  a New page for book and if selecting author fails it takes you back to book page.
   try {
@@ -99,6 +90,14 @@ function removebookCover(fileName) {
   }
 }
 
+function saveCover(book, coverEncoded) {
+  if (coverEncoded == null) return
+  const cover = JSON.parse(coverEncoded) //parsing string as JSON
+  if (cover != null && imageMimeTypes.includes(cover.type)) { //to confirm if javascript is bad we can return null to check image tyoe to ensure we have a valid cover
+    book.coverImage = new Buffer.from(cover.data, 'base64') //to create a buffer inbetween set of data //learned about base64 data
+    book.coverImageType = cover.type //converting back to image
+  }
+}
 
 
 module.exports = router
