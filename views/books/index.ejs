@@ -9,7 +9,7 @@
   <div class="form-row">
     <div class="form-item">
       <label>Published After</label>
-      <input type="date" name="publishedAfter" value="<%= searchOptions.publishedAfter %>"> <!--value to publish after-->
+      <input type="date" name="publishedAfter" value="<%= searchOptions.publishedAfter %>">
     </div>
     <div class="form-item">
       <label>Published Before</label>
@@ -17,12 +17,7 @@
     </div>
   </div>
   <div class="form-row form-row-end">
-    <a href="/books/<%= book.id %>">
     <button class="btn btn-primary" type="submit">Search</button>
-    <% books.forEach(book => {
-        <img height="150" width="100" src="<% book.coverImagePath %>">
-      </a>
-   <% }) %>
   </div>
 </form>
 <br>
